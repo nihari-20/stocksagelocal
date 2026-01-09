@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Details | Stock Insight</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="/" class="logo">
+                <span>⚡</span> StockInsight
+            </a>
+
+            <!-- Navbar Search -->
+            <div class="search-container nav-search" style="flex:1; max-width: 400px; margin: 0 24px;">
+                <input type="text" id="globalSearch" class="search-input" placeholder="Search stock..."
+                    autocomplete="off" style="padding: 10px 16px; font-size: 0.9rem;">
+                <div id="globalSearchResults" class="search-results"></div>
+            </div>
+
+            <div class="nav-links">
+                <a href="/" class="nav-link">Dashboard</a>
+                <a href="/static/news.html" class="nav-link">News</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="padding-top: 32px;">
+        <div id="loadingState" style="text-align: center; padding: 48px;">
+            Loading Stock Data...
+        </div>
+
+        <div id="contentState" style="display: none;">
+            <!-- Header -->
+            <div class="stock-header">
+                <div class="stock-name">
+                    <h1 id="sName">--</h1>
+                    <span id="sSymbol" class="stock-ticker">--</span>
+                    <span id="sMarket" class="stock-ticker"
+                        style="background: var(--bg-secondary); border: 1px solid var(--bg-tertiary);">--</span>
+                </div>
+                <div class="stock-price">
+                    <div id="sPrice" class="price-main">--</div>
+                    <!-- Change is hard to get from simple details without real-time stream, using placeholder or derived -->
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+
+            <!-- AI Insight & Fusion -->
+            <h2 class="section-header">AI Fusion Insight</h2>
+            <div class="indicator-grid">
+
+                <!-- AI Card -->
+                <div class="indicator-card ai-card">
+                    <div class="card-title">Market Regime (AI)</div>
+                    <div id="aiRegime" class="ai-regime">--</div>
+                    <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-bottom: 8px;">
+                        Confidence: <span id="aiConfidence">--</span>
+                    </div>
+                    <div class="card-title" style="margin-top: 16px;">Risk Level</div>
+                    <div class="risk-meter">
+                        <div id="riskFill" class="risk-fill"></div>
+                    </div>
+                </div>
+
+                <!-- Technicals -->
+                <div class="indicator-card">
+                    <div class="card-title">RSI (14)</div>
+                    <div id="indRSI" class="indicator-value">--</div>
+                    <div id="indSignal" style="font-size: 0.9rem;">Wait...</div>
+                </div>
+
+                <div class="indicator-card">
+                    <div class="card-title">MACD</div>
+                    <div id="indMACD" class="indicator-value">--</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const symbol = urlParams.get('symbol');
+            if (symbol) {
+                loadStockDetails(symbol);
+            } else {
+                window.location.href = '/';
+            }
+        });
+    </script>
+</body>
+
+</html>

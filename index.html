@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Insight | Market Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="/" class="logo">
+                <span>⚡</span> StockInsight
+            </a>
+
+            <!-- Navbar Search Removed for Dashboard -->
+
+            <div class="nav-links">
+                <a href="/" class="nav-link active">Dashboard</a>
+                <a href="/static/news.html" class="nav-link">News</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="hero-title">
+                Invest with <span style="color: var(--accent-primary)">Intelligence</span>
+            </h1>
+            <div class="search-container">
+                <input type="text" id="stockSearch" class="search-input"
+                    placeholder="Search stocks (e.g., TCS, RELIANCE, AAPL)..." autocomplete="off">
+                <div id="searchResults" class="search-results">
+                    <!-- Results injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Pulse -->
+        <section class="pulse-section">
+            <h2 class="section-header">Market Pulse</h2>
+            <div id="marketPulseGrid" class="card-grid">
+                <!-- Loading State -->
+                <div class="card">
+                    <div class="card-title">Loading...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trending Stocks -->
+        <section class="trending-section">
+            <h2 class="section-header">Trending Today</h2>
+            <div id="trendingGrid" class="card-grid">
+                <!-- Trending items injected here -->
+            </div>
+        </section>
+    </div>
+
+    <!-- App Logic -->
+    <script src="/static/js/app.js"></script>
+    <script>
+        // Init Dashboard logic
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchMarketPulse();
+            fetchTrending();
+            // setupSearch() handled in app.js
+        });
+    </script>
+</body>
+
+</html>

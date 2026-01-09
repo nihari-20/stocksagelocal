@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market News | Stock Insight</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="/" class="logo">
+                <span>⚡</span> StockInsight
+            </a>
+
+            <!-- Navbar Search -->
+            <div class="search-container nav-search" style="flex:1; max-width: 400px; margin: 0 24px;">
+                <input type="text" id="globalSearch" class="search-input" placeholder="Search stock..."
+                    autocomplete="off" style="padding: 10px 16px; font-size: 0.9rem;">
+                <div id="globalSearchResults" class="search-results"></div>
+            </div>
+
+            <div class="nav-links">
+                <a href="/" class="nav-link">Dashboard</a>
+                <a href="/static/news.html" class="nav-link active">News</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="padding-top: 32px;">
+        <h1 class="section-header" style="font-size: 2rem;">Latest Market News</h1>
+
+        <div id="newsGrid" style="max-width: 800px;">
+            <div class="card" style="text-align:center;">Loading News...</div>
+        </div>
+    </div>
+
+    <!-- App Logic for Search -->
+    <script src="/static/js/app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const res = await fetch('/news');
+                const data = await res.json();
+
+                const grid = document.getElementById('newsGrid');
+                grid.innerHTML = '';
+
+                data.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'news-item';
+                    div.style.cursor = 'pointer';
+                    div.onclick = () => window.open(item.url, '_blank');
+
+                    const sentimentColor = item.sentiment === 'Positive' ? 'var(--accent-primary)' : (item.sentiment === 'Negative' ? 'var(--accent-error)' : 'var(--text-secondary)');
+
+                    div.innerHTML = `
+                        <div class="news-content" style="padding: 16px;">
+                            <div class="news-title" style="font-size: 1.1rem; margin-bottom: 8px; color: var(--text-primary);">
+                                ${item.headline}
+                            </div>
+                            <div class="news-meta" style="color: ${sentimentColor}">
+                                Sentiment: ${item.sentiment}
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(div);
+                });
+
+            } catch (e) {
+                console.error(e);
+                document.getElementById('newsGrid').innerHTML = '<div class="card">Failed to load news.</div>';
+            }
+        });
+    </script>
+</body>
+
+</html>
