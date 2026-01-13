@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockSage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/home.css">
+</head>
+
+<body class="home-page">
+
+    <div class="home-container">
+        <!-- Fintech Noir Branding -->
+        <div class="home-branding">
+            <h1 class="home-logo">
+                Stock<span>Sage</span><i>⚡</i>
+            </h1>
+            <p class="home-subtitle">Intelligent financial analysis for the modern investor.</p>
+        </div>
+
+        <!-- Centered Search Model -->
+        <div class="home-search-wrapper">
+            <span class="home-search-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </span>
+            <input type="text" id="stockSearch" class="home-search-input"
+                placeholder="Search for a company or ticker..." autocomplete="off">
+            <div id="searchResults" class="home-results">
+                <!-- Data-driven results here -->
+            </div>
+        </div>
+
+        <!-- Refined Momentum Section -->
+        <div class="analysis-tags-section" id="trendingHomeTags">
+            <span class="analysis-label">Market Momentum:</span>
+            <!-- Dynamic momentum tags -->
+        </div>
+    </div>
+
+    <!-- App Engine Connectivity -->
+    <script src="/static/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchTrendingHome();
+            setupSearch('stockSearch', 'searchResults');
+        });
+
+        async function fetchTrendingHome() {
+            try {
+                const res = await fetch('/trending');
+                const data = await res.json();
+                const container = document.getElementById('trendingHomeTags');
+                container.innerHTML = '<span class="analysis-label">Market Momentum:</span>';
+
+                data.slice(0, 8).forEach(stock => {
+                    const btn = document.createElement('button');
+                    btn.className = 'tag-btn';
+                    btn.innerText = stock.symbol.replace('.NS', '').replace('.BO', '');
+                    btn.onclick = () => quickSearch(stock.symbol);
+                    container.appendChild(btn);
+                });
+            } catch (e) {
+                console.error("Trending fetch failed", e);
+            }
+        }
+
+        function quickSearch(query) {
+            const input = document.getElementById('stockSearch');
+            input.value = query;
+            input.dispatchEvent(new Event('input'));
+            input.focus();
+        }
+    </script>
+</body>
+
+</html>
